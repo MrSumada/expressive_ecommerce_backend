@@ -32,6 +32,11 @@ router.get('/:id', (req, res) => {
       attributes: ['id', 'product_name', 'price', 'stock', 'category_id']
     }]
   })
+  .then(tagData => res.json(tagData))
+    .catch(err => {
+      console.log(err);
+      res.status(500).json(err);
+    });
 });
 
 router.post('/', (req, res) => {
@@ -49,7 +54,7 @@ router.post('/', (req, res) => {
 
 router.put('/:id', (req, res) => {
   // update a tag's name by its `id` value
-  Tag.create(req.body, {
+  Tag.update(req.body, {
     where: {
       id: req.params.id
     }
@@ -74,7 +79,7 @@ router.delete('/:id', (req, res) => {
     }
   })
   .then(tagData => {
-    if (!tagData[0]) {
+    if (!tagData) {
       res.status(404).json('No Tag found with this id');
       return;
     }
